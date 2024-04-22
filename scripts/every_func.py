@@ -11,14 +11,14 @@ def deploy(new=False):
 
     opt = Options.deploy(xtkn, {"from": account}) if new else Options[-1]
 
-    ytkn.transfer(stranger, 10000000000, {"from": account})
-    xtkn.transfer(stranger, 10000000000, {"from": account})
+    ytkn.transfer(stranger, 10**11, {"from": account})
+    xtkn.transfer(stranger, 10**11, {"from": account})
 
     return xtkn, ytkn, opt, account
 
 
 def write(
-    new=False, callPut=True, exp=int(time.time()) + 10, tknAmount=10, strikePrice=100
+    new=False, callPut=True, exp=int(time.time()) + 10, tknAmount=10, strikePrice=100, premium=3
 ):
     xtkn, ytkn, opt, account = deploy(new)
 
@@ -28,10 +28,9 @@ def write(
         erc20_address=ytkn if callPut else xtkn,
         account=account,
     )
-
     tx = opt.writeOption(
         strikePrice,
-        3,
+        premium,
         exp,
         tknAmount,
         callPut,

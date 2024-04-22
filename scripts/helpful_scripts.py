@@ -3,14 +3,15 @@ from brownie import (
     accounts,
     config,
     interface,
-    Contract,
 )
 import json, requests, os
 from web3 import Web3
 
-INITIAL_PRICE_FEED_VALUE = 2000000000000000000000
+INITIAL_PRICE_FEED_VALUE = 2 * (10**21)
 DECIMALS = 18
 
+WEB3_PROVIDER = "YOUR WEB3 PROVIDER LINK"
+PRICING_API = "YOUR json PRICING API LINK"
 NON_FORKED_LOCAL_BLOCKCHAIN_ENVIRONMENTS = ["hardhat", "development", "ganache"]
 LOCAL_BLOCKCHAIN_ENVIRONMENTS = NON_FORKED_LOCAL_BLOCKCHAIN_ENVIRONMENTS + [
     "mainnet-fork",
@@ -39,20 +40,20 @@ def get_verify_status():
 
 
 def get_price():
-    req = requests.get("https://ethgasstation.info/json/ethgasAPI.json")
+    req = requests.get(PRICING_API)
     d = json.loads(req.content)
-    print("safelow", d["safeLow"])
-    print("average", d["average"])
-    print("fast", d["fast"])
-    print("fastest", d["fastest"])
+    print("safelow: ", d["safeLow"])
+    print("average: ", d["average"])
+    print("fast: ", d["fast"])
+    print("fastest: ", d["fastest"])
 
     web3 = Web3(
         Web3.HTTPProvider(
-            "https://mainnet.infura.io/v3/409a765fff484820acc7c3b9bef62736"
+            WEB3_PROVIDER
         )
     )
     gas_price1 = web3.eth.gas_price
-    print("gas", gas_price1 / 10 ** 8)
+    print("gas: ", gas_price1 / 10 ** 8)
 
 
 def approve_erc20(amount, spender, erc20_address, account):

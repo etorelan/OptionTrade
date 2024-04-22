@@ -3,7 +3,7 @@
 /// @title OptionTrade
 /// @author etorelan
 /// @notice An options exchange with a deployer-defined common medium of exchange (XTKN) and option writer set ERC20 token
-/// @dev To easily understand what the contract is all about, please refer to the poorly drawn, but helpful, explanation
+/// @dev To easily understand what the contract is all about, please refer to the "Call" and "Put" diagrams
 
 pragma solidity 0.8.0;
 
@@ -16,7 +16,7 @@ contract Options {
         "Token transfer failed";
 
     struct option {
-        uint256 strike; //Price per tokento buy/sell
+        uint256 strike; //Price per token to buy/sell
         uint256 premium; //Paid to the writer
         uint256 expiration;
         uint256 amount; // Amount of ERC20 tokens to buy/sell
@@ -139,7 +139,7 @@ contract Options {
     ///@notice Depending on the callPut parameter the buyer is
     ///@notice required to either send XTKN or the option specific
     ///@notice ERC20 token, for further explanation refer to the
-    ///@notice drawing
+    ///@notice "Call" and "Put" diagrams
     function buyOption(uint256 _id) external {
         option memory curOption = options[_id];
         require(
@@ -180,7 +180,7 @@ contract Options {
         emit BuyOption(curOption.tokenAddr, _id, sent);
     }
 
-    ///@notice Transfering tokens deposited tokens to proper addresses
+    ///@notice Transfering tokens deposited to proper addresses
     function exerciseOption(uint256 _id) external {
         option memory curOption = options[_id];
 
